@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{%load static%}
+<html>
+<head>
+    <link rel="stylesheet" href="{%static 'css/card-style.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+<h2 style="text-align:center">User Profile Card</h2>
+<div class="container">
+  
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">search</span>
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" name="username">
+      </div>
+    </div>
+    <div class="col-4"></div>
+  </div>
+</div>
+
+
+{%for profile in profiles%}
+<div class="card">
+    {%if profile.profile_pic%}
+    <img src="{{profile.profile_pic.url}}" alt="John" style="width:100%" height="300px">
+    {%endif%}
+    <h1><a href="{%url 'profile-detail' profile.id%}">{{profile}}</a></h1>
+    <p class="title">{{profile.bio}}</p>
+    <p>{{profile.address}}</p>
+    <div style="margin: 24px 0;">
+        {{profile.following.all.count}} following
+        {{profile.followed_by.all.count}} followers
+
+    </div>
+    <p>
+        {%if request.user.profile in profile.followed_by.all%}
+          <a href="{%url 'unfollow' profile.id%}" class="btn btn-outline-dark">unfollow</a>
+        {%else%}
+          <a href="{%url 'follow' profile.id%}" class="btn btn-dark">follow</a>
+         {%endif%}
+    </p>
+  </div>
+
+{%endfor%}
+
+</body>
+</html>
